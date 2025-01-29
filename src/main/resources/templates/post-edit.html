@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Post</title>
+</head>
+<body>
+    <div class="container mt-4" th:fragment="post-edit">
+        <h1>Edit Post</h1>
+        <form action="/posts/{postId}" method="post" th:action="@{/posts/{postId}(postId=${post.postId})}" enctype="multipart/form-data">
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" th:value="${post.title}" required>
+            </div>
+            <div>
+                <label for="content">Content:</label>
+                <textarea id="content" name="content" th:value="${post.content}" required></textarea>
+            </div>
+            <div>
+                <label for="thumbnailContent">Thumbnail Content:</label>
+            <input type="text" id="thumbnailContent" name="thumbnailContent" th:value="${post.thumbnailContent}">
+            </div>
+
+            <h3>Categories</h3>
+            <ul>
+                <li th:each="categoryName : ${post.categoryNames}" th:text="${categoryName}"></li>
+            </ul>
+
+
+            <h3>Files</h3>
+            <ul>
+                <li th:each="file : ${post.files}">
+                    <a th:href="@{${file.fileUrl}}" th:text="${file.fileUrl}"></a>
+                    <!-- 삭제 버튼 추가 -->
+                    <form th:action="@{/posts/{postId}/delete-file/{fileId}(postId=${post.id}, fileId=${file.id})}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">삭제</button>
+                    </form>
+                    </li>
+                </ul>
+
+                <div>
+                    <button type="submit">Save Post</button>
+                </div>
+            </form>
+    </div>
+</body>
+</html>

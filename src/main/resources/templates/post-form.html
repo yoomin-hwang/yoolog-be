@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <style>
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4" th:fragment="post-form">
+        <h1>Create Post</h1>
+        <form th:action="@{/posts/new}" th:object="${post}" method="post" enctype="multipart/form-data">
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" id="title" th:field="*{title}" required>
+            </div>
+            <div>
+                <label for="content">Content:</label>
+                <textarea id="content" th:field="*{content}" required></textarea>
+            </div>
+
+            <div>
+                <label for="categories">Categories:</label>
+                <select id="categories" th:field="*{categoryNames}" multiple>
+                    <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.name}"></option>
+                </select>
+            </div>
+
+
+            <div>
+                <label for="files">Files:</label>
+                <input type="file" id="files" name="file" multiple>
+                <ul>
+                    <li th:each="fileUrl : ${post.files}">
+                        <a th:href="@{${fileUrl}}" th:text="${fileUrl}"></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-success">저장</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
