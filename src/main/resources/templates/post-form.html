@@ -25,14 +25,22 @@
                 <textarea id="content" name="content" required></textarea>
             </div>
 
-            <div>
-                <label for="categories">Categories:</label>
-                <select id="categories" name="categoryNames" multiple>
-                    <option th:each="category : ${categories}"
-                            th:value="${category.name}"
-                            th:text="${category.name}"></option>
-                </select>
+            <div class="mb-3">
+                <label for="categoryInput" class="form-label">카테고리:</label>
+                <input type="text" id="categoryInput" class="form-control" placeholder="카테고리를 입력 후 엔터를 눌러 추가하세요">
+                <div id="categoryTags" class="mt-2"></div>
+                <input type="hidden" name="categoryNames" id="categoryNames">
             </div>
+
+<!--            <div>-->
+<!--                <label for="categories">Categories:</label>-->
+<!--                -->
+<!--                <select id="categories" name="categoryNames" multiple>-->
+<!--                    <option th:each="category : ${categories}"-->
+<!--                            th:value="${category.name}"-->
+<!--                            th:text="${category.name}"></option>-->
+<!--                </select>-->
+<!--            </div>-->
 
             <div>
                 <label for="files">Files:</label>
@@ -44,5 +52,41 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryInput = document.getElementById("categoryInput");
+            const categoryTags = document.getElementById("categoryTags");
+            const categoryNames = document.getElementById("categoryNames");
+            let categories = [];
+
+            categoryInput.addEventListener("keypress", function (event) {
+                if (event.key === "Enter" || event.key === ",") {
+                    event.preventDefault();
+                    const category = categoryInput.value.trim();
+                    if (category && !categories.includes(category)) {
+                        categories.push(category);
+                        updateCategoryTags();
+                    }
+                    categoryInput.value = "";
+                }
+            });
+
+            function updateCategoryTags() {
+                categoryTags.innerHTML = "";
+                categories.forEach(category => {
+                    const tag = document.createElement("span");
+                    tag.className = "category-tag";
+                    tag.innerHTML = `${category} <span class="remove-tag">&times;</span>`;
+                    tag.querySelector(".remove-tag").addEventListener("click", function () {
+                        categories = categories.filter(c => c !== category);
+                        updateCategoryTags();
+                    });
+                    categoryTags.appendChild(tag);
+                });
+                categoryNames.value = categories.join(",");
+            }
+        });
+    </script>
 </body>
 </html>
