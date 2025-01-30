@@ -14,7 +14,7 @@ _체크된 항목은 해당 프로젝트에서 연습해본 기능을 의미함_
 - [ ] 학교 홈페이지 로그인 OAuth 연결
 
 ## Tech Stack
-`SpringBoot` `Docker` `Thymeleaf` `Railway` `HTML` `CSS` `Javascript`
+`SpringBoot` `Docker` `Thymeleaf` `HTML` `CSS` `Javascript`
 
 ## ER Diagram
 <img width="697" alt="Image" src="https://github.com/user-attachments/assets/c95803d6-f078-45e3-aa07-aa0cc7eb08f6" />
