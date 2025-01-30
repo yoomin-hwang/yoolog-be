@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post List</title>
@@ -17,10 +17,10 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${post.title}">포스트 제목</h5>
                             <p class="card-text" th:text="${post.content}">포스트 내용</p>
-                            <a th:href="@{/posts/{postId}(postId=${post.postId})}" class="btn btn-primary">자세히 보기</a>
+                            <a th:href="@{/posts/{postId}(postId=${post.id})}" class="btn btn-primary">자세히 보기</a>
 
                             <!-- Delete button -->
-                            <form th:action="@{/posts/{postId}(postId=${post.postId})}" method="post">
+                            <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post">
                                 <input type="hidden" name="_method" value="DELETE" />
                                 <button type="submit" class="btn btn-danger">삭제</button>
                             </form>

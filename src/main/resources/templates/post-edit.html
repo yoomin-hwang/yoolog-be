@@ -8,19 +8,19 @@
 <body>
     <div class="container mt-4" th:fragment="post-edit">
         <h1>Edit Post</h1>
-        <form action="/posts/{postId}" method="post" th:action="@{/posts/{postId}(postId=${post.postId})}" enctype="multipart/form-data">
+        <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post" enctype="multipart/form-data">
             <div>
                 <label for="title">Title:</label>
                 <input type="text" id="title" name="title" th:value="${post.title}" required>
             </div>
             <div>
                 <label for="content">Content:</label>
-                <textarea id="content" name="content" th:value="${post.content}" required></textarea>
+                <textarea id="content" name="content" th:text="${post.content}" required></textarea>
             </div>
-            <div>
-                <label for="thumbnailContent">Thumbnail Content:</label>
-            <input type="text" id="thumbnailContent" name="thumbnailContent" th:value="${post.thumbnailContent}">
-            </div>
+<!--            <div>-->
+<!--                <label for="thumbnailContent">Thumbnail Content:</label>-->
+<!--            <input type="text" id="thumbnailContent" name="thumbnailContent" th:value="${post.thumbnailContent}">-->
+<!--            </div>-->
 
             <h3>Categories</h3>
             <ul>

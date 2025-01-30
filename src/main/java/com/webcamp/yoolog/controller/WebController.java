@@ -50,7 +50,6 @@ public class WebController {
         return "home";
     }
 
-    // Edit post form
     @GetMapping("/posts/{postId}/edit")
     public String editPostForm(@PathVariable Long postId, Model model) {
         model.addAttribute("post", postService.getPost(postId));
@@ -59,8 +58,8 @@ public class WebController {
         return "home";
     }
 
-    // Update post
-    @PostMapping("/posts/{postId}/edit")
+    // 수정 처리 - GetMapping을 PostMapping으로 변경
+    @PostMapping("/posts/{postId}")  // URL 패턴도 변경
     public String updatePost(@PathVariable Long postId,
                              @ModelAttribute PostDto postDto,
                              @RequestParam(required = false) MultipartFile[] files,
