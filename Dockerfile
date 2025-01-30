@@ -8,7 +8,9 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle settings.gradle ./
 RUN chmod +x gradlew
-RUN ./gradlew dependencies --no-daemon
+
+# Gradle 빌드 실행 (dependencies 대신 build로 변경)
+RUN ./gradlew build --no-daemon
 
 # 프로젝트 코드 복사 및 빌드 실행
 COPY . ./
