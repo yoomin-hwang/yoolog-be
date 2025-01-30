@@ -26,21 +26,27 @@ public class PostService {
     private final CategoryRepository categoryRepository;
     private final FileService fileService;
 
+    @Transactional
     public Long createPost(PostDto postDto, MultipartFile[] files, List<String> categoryNames) throws IOException {
         Post post = new Post();
-        updatePostFromDto(post, postDto);
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
 
-        // 파일이 있으면 업로드 + 파일 URL을 저장
+        // 파일 처리
         if (files != null && files.length > 0) {
             for (MultipartFile file : files) {
-                String fileUrl = fileService.uploadFile(file);
-                FileEntity postFile = new FileEntity();
-                postFile.setFileUrl(fileUrl);
-                post.getFiles().add(postFile);
+                if (!file.isEmpty()) {  // 빈 파일이 아닌 경우만 처리
+                    String fileUrl = fileService.uploadFile(file);
+                    FileEntity postFile = new FileEntity();
+                    postFile.setFileUrl(fileUrl);
+                    postFile.setFileName(file.getOriginalFilename());
+                    postFile.setPost(post);
+                    post.getFiles().add(postFile);
+                }
             }
         }
 
-        // 카테고리 있으면 업로드 + 카테고리 디비에 저장
+        // 카테고리 처리
         if (categoryNames != null && !categoryNames.isEmpty()) {
             for (String categoryName : categoryNames) {
                 Category category = categoryRepository.findByName(categoryName)
@@ -55,6 +61,7 @@ public class PostService {
         postRepository.save(post);
         return post.getId();
     }
+
     public PostDto getPost(Long id) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));

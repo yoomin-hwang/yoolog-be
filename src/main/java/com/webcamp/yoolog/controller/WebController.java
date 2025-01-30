@@ -33,11 +33,15 @@ public class WebController {
         return "home";
     }
 
-    // Create post
     @PostMapping("/posts/new")
-    public String createPost(@ModelAttribute PostDto postDto,
-                             @RequestParam(required = false) MultipartFile[] files,
-                             @RequestParam(required = false) List<String> categoryNames) throws IOException {
+    public String createPost(@RequestParam String title,
+                             @RequestParam String content,
+                             @RequestParam(required = false) List<String> categoryNames,
+                             @RequestParam(required = false) MultipartFile[] files) throws IOException {
+        PostDto postDto = new PostDto();
+        postDto.setTitle(title);
+        postDto.setContent(content);
+
         Long postId = postService.createPost(postDto, files, categoryNames);
         return "redirect:/posts/" + postId;
     }
