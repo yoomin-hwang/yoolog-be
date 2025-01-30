@@ -27,22 +27,31 @@
                 <li th:each="categoryName : ${post.categoryNames}" th:text="${categoryName}"></li>
             </ul>
 
-
             <h3>Files</h3>
             <ul>
                 <li th:each="file : ${post.files}">
-                    <a th:href="@{${file.fileUrl}}" th:text="${file.fileUrl}"></a>
-                    <!-- 삭제 버튼 추가 -->
+                    <a th:href="@{${file.fileUrl}}" th:text="${file.fileName}"></a>
                     <form th:action="@{/posts/{postId}/delete-file/{fileId}(postId=${post.id}, fileId=${file.id})}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-danger">삭제</button>
                     </form>
-                    </li>
-                </ul>
+                </li>
+            </ul>
 
-                <div>
-                    <button type="submit">저장</button>
-                </div>
-            </form>
+<!--            <h3>Files</h3>-->
+<!--            <ul>-->
+<!--                <li th:each="file : ${post.files}">-->
+<!--                    <a th:href="@{${file.fileUrl}}" th:text="${file.fileUrl}"></a>-->
+<!--                    &lt;!&ndash; 삭제 버튼 추가 &ndash;&gt;-->
+<!--                    <form th:action="@{/posts/{postId}/delete-file/{fileId}(postId=${post.id}, fileId=${file.id})}" method="post" style="display:inline;">-->
+<!--                        <button type="submit" class="btn btn-danger">삭제</button>-->
+<!--                    </form>-->
+<!--                </li>-->
+<!--            </ul>-->
+
+            <div>
+                <button type="submit">저장</button>
+            </div>
+        </form>
     </div>
 </body>
 </html>

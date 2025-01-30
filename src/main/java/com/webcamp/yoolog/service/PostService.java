@@ -71,15 +71,26 @@ public class PostService {
     public void updatePost(Long id, PostDto postDto, MultipartFile[] files, List<String> categoryNames) throws IOException {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-        updatePostFromDto(post, postDto);
 
-        // 파일이 있으면 업로드하고 파일 URL을 저장
-        if (files != null && files.length > 0) {
+        post.setTitle(postDto.getTitle());
+        post.setContent(postDto.getContent());
+
+        // 기존 파일 삭제
+        if (postDto.getFiles() != null) {
+            for (FileDto fileDto : postDto.getFiles()) {
+                fileService.deleteFile(fileDto.getId()); // 파일 삭제
+                post.getFiles().removeIf(file -> file.getId().equals(fileDto.getId())); // 리스트에서 제거
+            }
+        }
+
+        // 새로운 파일 업로드
+        if (files != null) {
             for (MultipartFile file : files) {
                 String fileUrl = fileService.uploadFile(file);
-                FileEntity postFile = new FileEntity();
-                postFile.setFileUrl(fileUrl);
-                post.getFiles().add(postFile);
+                FileEntity newFile = new FileEntity();
+                newFile.setFileUrl(fileUrl);
+                newFile.setPost(post);
+                post.getFiles().add(newFile);
             }
         }
 

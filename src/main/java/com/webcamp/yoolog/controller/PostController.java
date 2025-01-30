@@ -2,12 +2,14 @@ package com.webcamp.yoolog.controller;
 
 import com.webcamp.yoolog.dto.PostDto;
 import com.webcamp.yoolog.service.PostService;
+import com.webcamp.yoolog.util.FileService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+    private final FileService fileService;
 
     // create post - 다수의 files, categories 가능
     @PostMapping
@@ -48,5 +51,11 @@ public class PostController {
     public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
         postService.deletePost(postId);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/posts/{postId}/delete-file/{fileId}")
+    public String deleteFile(@PathVariable Long postId, @PathVariable Long fileId) throws FileNotFoundException {
+        fileService.deleteFile(fileId);
+        return "redirect:/posts/" + postId + "/edit";
     }
 }
